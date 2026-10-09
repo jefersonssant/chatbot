@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chatbot minimalista — HTML5, CSS3 e JavaScript vanilla.">
+  <title>Chatbot Minimalista</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="chat" role="main">
+    <header class="chat__header">
+      <div class="chat__identity">
+        <span class="chat__avatar" aria-hidden="true"></span>
+        <div class="chat__titles">
+          <h1 class="chat__title">Chatbot</h1>
+          <span class="chat__status">Online</span>
+        </div>
+      </div>
+      <button type="button" class="btn btn--secondary" id="clearBtn" aria-label="Limpar histórico de mensagens">
+        Limpar
+      </button>
+    </header>
+
+    <section class="chat__messages" id="messages" role="log" aria-live="polite" aria-label="Histórico de mensagens">
+      <!-- Mensagens injetadas via JavaScript -->
+    </section>
+
+    <footer class="chat__composer">
+      <label class="visually-hidden" for="messageInput">Mensagem</label>
+      <textarea
+        id="messageInput"
+        class="input"
+        rows="1"
+        placeholder="Escreva uma mensagem..."
+        aria-label="Digite sua mensagem"
+      ></textarea>
+      <button type="button" class="btn btn--primary" id="sendBtn" aria-label="Enviar mensagem">
+        Enviar
+      </button>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

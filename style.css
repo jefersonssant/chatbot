@@ -1,0 +1,400 @@
+/* ==========================================================================
+   Design Tokens
+   ========================================================================== */
+:root {
+  /* Cores */
+  --text: #E1E1E6;
+  --background: #121214;
+  --primary: #8257E5;
+  --secondary: #202024;
+  --accent: #04D361;
+
+  --text-on-primary: #FFFFFF;
+  --border-subtle: #323238;
+  --overlay: rgba(0, 0, 0, 0.2);
+
+  /* Tipografia */
+  --font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-size-base: 15px;
+  --font-size-small: 12px;
+  --font-size-title: 16px;
+  --line-height-base: 1.5;
+
+  /* Espaçamento */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --bubble-padding-y: 12px;
+  --bubble-padding-x: 16px;
+
+  /* Raios */
+  --radius-bubble: 12px;
+  --radius-bubble-tail: 2px;
+  --radius-control: 6px;
+
+  /* Sombras */
+  --shadow-control: 0 2px 4px var(--overlay);
+
+  /* Layout */
+  --chat-max-width: 480px;
+  --chat-max-height: 650px;
+}
+
+/* ==========================================================================
+   Reset / Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+  margin: 0;
+}
+
+button,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Container do Chat (Layout Responsivo)
+   ========================================================================== */
+.chat {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--chat-max-width);
+  height: 100%;
+  max-height: var(--chat-max-height);
+  overflow: hidden;
+  background: var(--secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-bubble);
+  box-shadow: var(--shadow-control);
+}
+
+/* ==========================================================================
+   Cabeçalho
+   ========================================================================== */
+.chat__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  background: var(--secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.chat__identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.chat__avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.chat__titles {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.chat__title {
+  font-size: var(--font-size-title);
+  font-weight: 600;
+}
+
+.chat__status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-small);
+  color: var(--accent);
+}
+
+.chat__status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ==========================================================================
+   Área de Mensagens
+   ========================================================================== */
+.chat__messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--background);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+}
+
+.chat__messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat__messages::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
+
+/* ==========================================================================
+   Balões de Mensagem (Chat Bubbles)
+   ========================================================================== */
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  padding: var(--bubble-padding-y) var(--bubble-padding-x);
+  border-radius: var(--radius-bubble);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  animation: message-in 160ms ease-out;
+}
+
+.message__text {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.message__timestamp {
+  margin-top: 4px;
+  font-size: var(--font-size-small);
+  opacity: 0.7;
+}
+
+/* Usuário: fundo --primary, texto branco, alinhado à direita,
+   canto inferior direito reto (2px) */
+.message--user {
+  align-self: flex-end;
+  align-items: flex-end;
+  background: var(--primary);
+  color: var(--text-on-primary);
+  border-bottom-right-radius: var(--radius-bubble-tail);
+}
+
+/* Bot: fundo --secondary, texto --text, alinhado à esquerda,
+   canto inferior esquerdo reto (2px) */
+.message--bot {
+  align-self: flex-start;
+  align-items: flex-start;
+  background: var(--secondary);
+  color: var(--text);
+  border-bottom-left-radius: var(--radius-bubble-tail);
+}
+
+/* ==========================================================================
+   Indicador de Digitação (três pontos pulsantes)
+   ========================================================================== */
+.typing {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: var(--bubble-padding-y) var(--bubble-padding-x);
+  background: var(--secondary);
+  color: var(--text);
+  border-radius: var(--radius-bubble);
+  border-bottom-left-radius: var(--radius-bubble-tail);
+}
+
+.typing__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text);
+  opacity: 0.4;
+  animation: typing-pulse 1.2s infinite ease-in-out;
+}
+
+.typing__dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing__dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing-pulse {
+  0%,
+  60%,
+  100% {
+    opacity: 0.4;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes message-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Botões
+   ========================================================================== */
+.btn {
+  padding: var(--space-1) var(--space-2);
+  border: none;
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-control);
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 120ms ease, background-color 120ms ease;
+}
+
+.btn:hover {
+  filter: brightness(1.1);
+}
+
+.btn:active {
+  filter: brightness(0.95);
+}
+
+/* Primário (Enviar): fundo --accent em alto contraste */
+.btn--primary {
+  background: var(--accent);
+  color: var(--background);
+}
+
+/* Secundário (Limpar/Ações): tom invertido do fundo */
+.btn--secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ==========================================================================
+   Campo de Texto (Input de Mensagem)
+   ========================================================================== */
+.input {
+  flex: 1;
+  min-width: 0;
+  max-height: 120px;
+  padding: var(--bubble-padding-y) var(--bubble-padding-x);
+  background: var(--secondary);
+  color: var(--text);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-control);
+  font-family: inherit;
+  line-height: var(--line-height-base);
+  resize: none;
+  overflow-y: auto;
+  transition: border-color 120ms ease;
+}
+
+.input::placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+.input:focus {
+  border-color: var(--primary);
+}
+
+/* ==========================================================================
+   Composer (área de envio)
+   ========================================================================== */
+.chat__composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  background: var(--secondary);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ==========================================================================
+   Mobile (width <= 600px): chat ocupa 100% da viewport
+   ========================================================================== */
+@media (max-width: 600px) {
+  body {
+    padding: 0;
+  }
+
+  .chat {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* Respeita a preferência por menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
